@@ -1,0 +1,129 @@
+- name: System Update
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Setup Build Environment
+  apt:
+    name: 
+      - build-essential 
+      - pkg-config 
+      - erlang 
+      - libicu-dev 
+      - libmozjs185-dev 
+      - libcurl4-openssl-dev
+    state: latest
+    install_recommends: no
+
+- name: Download CouchDB
+  get_url:
+    url: https://archive.apache.org/dist/couchdb/source/2.0.0/apache-couchdb-2.0.0.tar.gz
+    dest: /usr/local/src
+
+- name: Unpack CouchDB Source
+  unarchive:
+    src: /usr/local/src/apache-couchdb-2.0.0.tar.gz
+    dest: /usr/local/src
+    remote_src: yes
+
+- name: Configure Build
+  command: chdir=/usr/local/src/apache-couchdb-2.0.0 ./configure
+
+- name: Make Build
+  make:
+    chdir: /usr/local/src/apache-couchdb-2.0.0
+    target: release
+
+- name: Deploy CouchDB
+  command: cp -R /usr/local/src/apache-couchdb-2.0.0/rel/couchdb /data/
+
+- name: Add CouchDB System Account
+  user:
+    name: couchdb
+    comment: "CouchDB System Account"
+    shell: /bin/bash
+    system: yes
+    home: /data/couchdb
+    createhome: no
+
+- name: Change CouchDB Ownership
+  file:
+    path: /data/couchdb
+    owner: couchdb
+    group: couchdb
+    mode: 0770
+    recurse: yes
+    state: directory
+
+- name: Change CouchDB Config File Permission
+  file:
+    path: /data/couchdb/etc
+    owner: couchdb
+    group: couchdb
+    mode: 0644
+    recurse: yes
+    state: directory
+
+- name: Change CouchDB Directory Permission
+  command: find /data/couchdb -type d -exec chmod 0770 {} \;
+
+- name: Change Node Name
+  replace:
+    dest: /data/couchdb/etc/vm.args
+    regexp: '^-name couchdb@localhost$'
+    replace: '-name couchdb@{{ansible_eth0.ipv4.address}}'
+
+- name: Add kernel Args
+  blockinfile:
+    dest: /data/couchdb/etc/vm.args
+    insertafter: '-kernel'
+    content: | 
+      -kernel inet_dist_listen_min 9100
+      -kernel inet_dist_listen_max 9200
+
+- name: Set Cookie
+  replace:
+    dest: /data/couchdb/etc/vm.args
+    regexp: '^-setcookie monster$'
+    replace: '-setcookie zaFradre6ech'
+
+# - name: Bind Cluster Address to Public
+#   lineinfile:
+#     dest: /data/couchdb/etc/local.ini
+#     insertafter: '^\[chttpd\]$'
+#     line: 'bind_address = 0.0.0.0'
+
+# - name: Bind Node Address to Public
+#   lineinfile:
+#     dest: /data/couchdb/etc/local.ini
+#     insertafter: '^\[httpd\]$'
+#     line: 'bind_address = 0.0.0.0'
+
+- name: Bind Cluster/Node Address to Public
+  copy:
+    src: ./files/local.ini
+    dest: /data/couchdb/etc
+
+- name: Add Admin User
+  lineinfile:
+    dest: /data/couchdb/etc/local.ini
+    insertafter: '^\[admins\]$'
+    line: 'sdsadmin = password'
+
+- name: Install CouchDB Serice
+  copy:
+    src: ./files/couchdb.service
+    dest: /etc/systemd/system/couchdb.service
+    owner: root
+    group: root
+
+- name: Enable CouchDB Service
+  systemd:
+    daemon-reload: yes
+    name: couchdb
+    enabled: yes
+
+- name: Start CouchDB Service
+  systemd:
+    name: couchdb
+    state: restarted

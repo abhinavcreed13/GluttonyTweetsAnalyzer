@@ -1,0 +1,35 @@
+- name: Cleaning previous hosts
+  file:
+    path: "hosts"
+    state: absent
+
+- name: cleaning cluster nodes for couch db
+  file:
+    path: "files/sds-couch-dynamic-vars.yaml"
+    state: absent
+
+- name: create dynamic cluster nodes yaml for couch db
+  file:
+    path: "files/sds-couch-dynamic-vars.yaml"
+    state: touch
+
+- name: add yaml in cluster nodes
+  lineinfile:
+    path: "files/sds-couch-dynamic-vars.yaml"
+    line: "couch_cluster_server:"
+
+- name: Creating hosts
+  file:
+    path: "hosts"
+    state: touch
+
+- name: Adding line
+  lineinfile:
+    path: "hosts"
+    line: "[Webservers]"
+
+- name: Create an instance
+  include_tasks: create.yaml
+  loop: "{{ instances }}"
+  loop_control:
+    loop_var: outer_item

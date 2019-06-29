@@ -1,0 +1,10 @@
+- hosts: Webservers
+  sudo: yes
+  vars_files:
+    - host_vars/sds-app-vars.yaml
+  gather_facts: true
+
+  roles:
+    - role: sds-deploy-app
+    - role: sds-run-harvester
+    - role: sds-run-app

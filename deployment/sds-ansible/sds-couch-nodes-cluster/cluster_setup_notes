@@ -1,0 +1,22 @@
+-kernel inet_dist_listen_min 9100
+-kernel inet_dist_listen_max 9200
+
+curl -X POST -H "Content-Type: application/json" http://sdsadmin:password@localhost:5990/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "sdsadmin", "password":"password", "port": 5990, "node_count": "4", "remote_node": "45.113.235.186", "remote_current_user": "sdsadmin", "remote_current_password": "password", "remote_port":5990 }'
+curl -X POST -H "Content-Type: application/json" http://sdsadmin:password@localhost:5990/_cluster_setup -d '{"action": "add_node", "host":"45.113.235.186", "port": 5990, "username": "sdsadmin", "password":"password"}'
+
+curl -X POST -H "Content-Type: application/json" http://sdsadmin:password@localhost:5990/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "sdsadmin", "password":"password", "port": 5990, "node_count": "4", "remote_node": "45.113.233.238", "remote_current_user": "sdsadmin", "remote_current_password": "passwreord", "remote_port":5990 }'
+curl -X POST -H "Content-Type: application/json" http://sdsadmin:password@localhost:5990/_cluster_setup -d '{"action": "add_node", "host":"45.113.233.238", "port": 5990, "username": "sdsadmin", "password":"password"}'
+
+curl -X POST -H "Content-Type: application/json" http://sdsadmin:password@localhost:5990/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "sdsadmin", "password":"password", "port": 5990, "node_count": "4", "remote_node": "45.113.233.242", "remote_current_user": "sdsadmin", "remote_current_password": "password", "remote_port":5990 }'
+curl -X POST -H "Content-Type: application/json" http://sdsadmin:password@localhost:5990/_cluster_setup -d '{"action": "add_node", "host":"45.113.233.242", "port": 5990, "username": "sdsadmin", "password":"password"}'
+
+curl -X POST -H "Content-Type: application/json" http://sdsadmin:password@localhost:5990/_cluster_setup -d '{"action": "finish_cluster"}'
+
+curl http://sdsadmin:password@localhost:5990/_cluster_setup
+
+curl http://sdsadmin:password@localhost:5990/_membership
+
+curl -X PUT "http://sdsadmin:password@localhost:5990/test?q=4&n=2"
+
+curl -s http://sdsadmin:password@localhost:5990/sds_db/_shards | jq
+

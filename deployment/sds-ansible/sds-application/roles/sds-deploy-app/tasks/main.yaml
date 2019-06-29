@@ -1,0 +1,15 @@
+- name: Creating directory
+  file:
+    path: /data/projectsds-1.0.0
+    state: directory
+
+- name: Deploy Package
+  copy:
+    src: ./package/projectsds-1.0.0.tar.gz
+    dest: /data
+
+- name: Unpack packager
+  unarchive:
+    src: /data/projectsds-1.0.0.tar.gz
+    dest: /data/projectsds-1.0.0
+    remote_src: yes

@@ -1,0 +1,74 @@
+- name: cleaning
+  set_fact:
+    vol_of_instance: "{{ [] }}"
+    sec_group_of_instance: "{{ [] }}"
+
+- name: selecting correct volume as per instance
+  set_fact:
+    vol_of_instance: "{{ vol_of_instance|default([]) + [ item.id ] }}"
+  loop: "{{ os_vol_ids }}"
+  when: "item.key == 'vol_' + outer_item.instance_name"
+
+- name: selecting correct security group as per instance
+  set_fact:
+    sec_group_of_instance: "{{ sec_group_of_instance|default([]) + item.name }}"
+  loop: "{{ security_groups_map }}"
+  when: "item.sec_key == 'sec_' + outer_item.instance_name"
+
+- name: creating instance
+  os_server:
+    name: '{{ outer_item.instance_name }}'
+    image: '{{ outer_item.instance_image }}'
+    key_name: '{{ outer_item.instance_key_name }}'
+    flavor: '{{ outer_item.instance_flavor }}'
+    availability_zone: '{{ availability_zone }}'
+    security_groups: '{{ sec_group_of_instance }}'
+    volumes: '{{ vol_of_instance }}'
+    auto_floating_ip: yes
+    wait: yes
+    timeout: 600
+    state: present
+  register: os_instance
+
+- name: check if couchdb host file exists
+  stat:
+    path: 'files/hosts_couch'
+  register: stat_result
+
+- name: create couchdb host file to add master node - 1
+  file:
+    path: 'files/hosts_couch'
+    state: touch
+  when: stat_result.stat.exists == False
+
+- name: create couchdb host file to add master node - 2
+  lineinfile:
+    path: 'files/hosts_couch'
+    line: "[Webserver]"
+  when: stat_result.stat.exists == False
+
+# adding webserver on which sds-couch-nodes-cluster will run
+- name: create couchdb host file to add master node - 3
+  lineinfile:
+    path: 'files/hosts_couch'
+    line: "{{ os_instance.openstack.public_v4 }}"
+    #line: "45.113.235.238"
+  when: stat_result.stat.exists == False
+
+# adding webservers in yaml using which couch membership will be established
+- name: add cluster node for couch db
+  lineinfile:
+    path: "files/sds-couch-dynamic-vars.yaml"
+    line: "  - '{{ os_instance.openstack.public_v4 }}'"
+    #line: "  - '{{ outer_item.ip }}'"
+  when: stat_result.stat.exists == True
+
+- name: storing instance IP
+  lineinfile:
+    path: "hosts"
+    line: "{{ os_instance.openstack.public_v4 }}"
+  when: os_instance.openstack is defined
+  
+- debug:
+    msg: "Instance {{ outer_item.instance_name }} has been created. IP address is {{ os_instance.openstack.public_v4 }}"
+  when: os_instance.openstack is defined

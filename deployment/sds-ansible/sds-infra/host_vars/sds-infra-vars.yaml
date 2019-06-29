@@ -1,0 +1,119 @@
+# Common vars
+availability_zone: melbourne-qh2-uom
+
+# Volume
+volumes:
+  - vol_key: vol_ins_0
+    vol_name: vol-ins0-01
+    vol_size: 10
+  - vol_key: vol_ins_0
+    vol_name: vol-ins0-02
+    vol_size: 50
+
+  - vol_key: vol_ins_1
+    vol_name: vol-ins1-01
+    vol_size: 10
+  - vol_key: vol_ins_1
+    vol_name: vol-ins1-02
+    vol_size: 50
+
+  - vol_key: vol_ins_2
+    vol_name: vol-ins2-01
+    vol_size: 10
+  - vol_key: vol_ins_2
+    vol_name: vol-ins2-02
+    vol_size: 50
+
+  - vol_key: vol_ins_3
+    vol_name: vol-ins3-01
+    vol_size: 10
+  - vol_key: vol_ins_3
+    vol_name: vol-ins3-02
+    vol_size: 50
+  
+# Security group
+security_groups:
+  - name: sds-ssh
+    description: "security group for SSH access"
+  - name: sds-http
+    description: "security group for HTTP"
+  - name: sds-couch-db-group
+    description: "security group for couch db"
+
+security_group_rules:
+  - name: sds-ssh
+    protocol: tcp
+    port_range_min: 22
+    port_range_max: 22
+    remote_ip_prefix: 0.0.0.0/0
+  - name: sds-http
+    protocol: tcp
+    port_range_min: 80
+    port_range_max: 80
+    remote_ip_prefix: 0.0.0.0/0
+  - name: sds-http
+    protocol: tcp
+    port_range_min: 1313
+    port_range_max: 1313
+    remote_ip_prefix: 0.0.0.0/0
+  - name: sds-couch-db-group
+    protocol: tcp
+    port_range_min: 5990
+    port_range_max: 5990
+    remote_ip_prefix: 0.0.0.0/0
+  - name: sds-couch-db-group
+    protocol: tcp
+    port_range_min: 4369
+    port_range_max: 4369
+    remote_ip_prefix: 0.0.0.0/0
+  - name: sds-couch-db-group
+    protocol: tcp
+    port_range_min: 9100
+    port_range_max: 9200
+    remote_ip_prefix: 0.0.0.0/0
+
+# instance - security group maps
+security_groups_map:
+  - sec_key: sec_ins_0
+    name: 
+      - sds-ssh
+      - sds-http
+      - sds-couch-db-group
+  - sec_key: sec_ins_1
+    name:
+      - sds-ssh
+      - sds-http
+      - sds-couch-db-group
+  - sec_key: sec_ins_2
+    name:
+      - sds-ssh
+      - sds-http
+      - sds-couch-db-group
+  - sec_key: sec_ins_3
+    name:
+      - sds-ssh
+      - sds-http
+      - sds-couch-db-group
+
+# Instance
+instances:
+  - instance_name: ins_0
+    instance_image: 0a2bac09-8beb-464a-9cbc-6adf4dfcd5e5
+    instance_key_name: cloud-pub-key
+    instance_flavor: uom.general.2c8g
+    #ip: '45.113.235.238'
+  - instance_name: ins_1
+    instance_image: 0a2bac09-8beb-464a-9cbc-6adf4dfcd5e5
+    instance_key_name: cloud-pub-key
+    instance_flavor: uom.general.2c8g
+    #ip: '45.113.235.186'
+  - instance_name: ins_2
+    instance_image: 0a2bac09-8beb-464a-9cbc-6adf4dfcd5e5
+    instance_key_name: cloud-pub-key
+    instance_flavor: uom.general.2c8g
+    #ip: '45.113.233.238'
+  - instance_name: ins_3
+    instance_image: 0a2bac09-8beb-464a-9cbc-6adf4dfcd5e5
+    instance_key_name: cloud-pub-key
+    instance_flavor: uom.general.2c8g
+    #ip: '45.113.233.242'

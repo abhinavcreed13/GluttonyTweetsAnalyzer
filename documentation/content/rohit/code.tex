@@ -1,0 +1,51 @@
+% \begin{tcolorbox}
+\begin{mdframed}
+\begin{lstlisting}[language=Dockerfile,label=docker_code_1, caption=Tweet Harvester DockerFile]
+
+# Use an official Python runtime as a parent image
+FROM python:3.7-alpine
+
+# Set the working directory to /app
+WORKDIR /usr/src/app
+
+# Copy the current directory contents into the container at /app
+COPY . /usr/src/app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
+
+# Make port 1313 available to the world outside this container
+EXPOSE 1313
+
+# Define environment variable
+ENV NAME AppFrontendNew
+
+# Run app.py when the container launches
+CMD ["python3", "app.py"]
+\end{lstlisting}
+\end{mdframed}
+
+\begin{mdframed}
+\begin{lstlisting}[language=Dockerfile,label=docker_code_2, caption= User Interface App DockerFile]
+# Use an official Python runtime as a parent image
+FROM python:3.7-alpine
+
+# Set the working directory to /app
+WORKDIR /usr/src/app
+
+# Copy the current directory contents into the container at /app
+COPY . /usr/src/app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
+
+# Make port 80 available to the world outside this container
+EXPOSE 86
+
+# Define environment variable
+ENV NAME SDSHarvester
+
+# Run app.py when the container launches
+CMD ["python3", "tweet_crawler.py"]
+\end{lstlisting}
+\end{mdframed}

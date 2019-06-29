@@ -1,0 +1,66 @@
+- name: register cluster nodes with master
+  shell: 'curl -X POST -H "Content-Type: application/json" http://sdsadmin:password@localhost:5990/_cluster_setup -d ''{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "sdsadmin", "password":"password", "port": 5990, "node_count": "4", "remote_node": "{{ item }}", "remote_current_user": "sdsadmin", "remote_current_password": "password", "remote_port":5990 }'''
+  args:
+    warn: false
+  loop: "{{ couch_cluster_server }}"
+
+- name: add node in cluster
+  shell: 'curl -X POST -H "Content-Type: application/json" http://sdsadmin:password@localhost:5990/_cluster_setup -d ''{"action": "add_node", "host":"{{ item }}", "port": 5990, "username": "sdsadmin", "password":"password"}'''
+  args:
+    warn: false
+  loop: "{{ couch_cluster_server }}"
+
+- name: complete cluster setup
+  args:
+    warn: false
+  shell: 'curl -X POST -H "Content-Type: application/json" http://sdsadmin:password@localhost:5990/_cluster_setup -d ''{"action": "finish_cluster"}'''
+
+- name: create sds_db (q=8, n=3)
+  args:
+    warn: false
+  shell: 'curl -X PUT "http://sdsadmin:password@localhost:5990/sds_db?q=8&n=3"'
+
+- name: create sds_db_vis (q=8, n=3)
+  args:
+    warn: false
+  shell: 'curl -X PUT "http://sdsadmin:password@localhost:5990/sds_db_vis?q=8&n=3"'
+
+- name: create sds_processed_users (q=8, n=3)
+  args:
+    warn: false
+  shell: 'curl -X PUT "http://sdsadmin:password@localhost:5990/sds_processed_users?q=8&n=3"'
+
+- name: Create couchdbviews directory
+  file:
+    path: /data/couchdbviews
+    state: directory
+
+- name: Copy design view file to server
+  copy:
+    src: ./couchdbviews/common.dataview.json
+    dest: /data/couchdbviews
+
+- name: Copy sds_db storyview to server
+  copy:
+    src: ./couchdbviews/sdsdb.storyview.json
+    dest: /data/couchdbviews
+
+- name: Install common design view in sds_db
+  args:
+    warn: false
+  shell: 'curl -X PUT http://sdsadmin:password@localhost:5990/sds_db/_design/dataview --data-binary @/data/couchdbviews/common.dataview.json'
+
+- name: Install story design view in sds_db
+  args:
+    warn: false
+  shell: 'curl -X PUT http://sdsadmin:password@localhost:5990/sds_db/_design/storyview --data-binary @/data/couchdbviews/sdsdb.storyview.json'
+
+- name: Install common design view in sds_db_vis
+  args:
+    warn: false
+  shell: 'curl -X PUT http://sdsadmin:password@localhost:5990/sds_db_vis/_design/dataview --data-binary @/data/couchdbviews/common.dataview.json'
+
+- name: Install design view in sds_processed_users
+  args:
+    warn: false
+  shell: 'curl -X PUT http://sdsadmin:password@localhost:5990/sds_processed_users/_design/dataview --data-binary @/data/couchdbviews/common.dataview.json'

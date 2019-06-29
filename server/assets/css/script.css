@@ -1,0 +1,160 @@
+body {
+    font-family: Lato;
+    overflow: hidden;
+}
+
+.control > div {
+    display: inline-block;
+    width: 340px;
+    height: 60px;
+    padding-top: 5px;
+    padding-left: 20px;
+}
+
+.control {
+    background-color: #efefef;
+    height: 60px;
+}
+
+.header .navbar {
+    margin-bottom: 0px;
+}
+
+.control .ops {
+    float: right;
+    padding-right: 15px;
+    width: 400px;
+}
+
+.control .ops > button {
+    float: right;
+    margin: 8px;
+}
+
+.explore .tweet_count {
+    /*float: right;*/
+    /*padding-top: 15px;*/
+    /*display: none;*/
+    position: relative;
+    left: 217px;
+    border: 1px solid #464646;
+    border-radius: 6px;
+    padding: 3px;
+    font-weight: normal;
+    color: white;
+    background-color: #464646;
+}
+
+.data-control-define-region,
+.data-control-plot-sins,
+.data-control-aurin-dataset {
+    width: 250px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    width: 9px;
+}
+
+span.select2-selection.select2-selection--single {
+    outline: none;
+}
+
+.mapview {
+    height: 700px;
+    width: 100%;
+}
+
+.tweet-text {
+    border-left: 2px solid #AAA;
+    padding: 2px 2px 2px 8px;
+    margin-bottom: 10px;
+}
+
+.tweet-author a, .tweet-author a:visited {
+    font-weight: bold;
+    color: grey;
+}
+
+.test-output-section {
+    height: 700px;
+    display: none;
+}
+
+.test-output-section > pre {
+    overflow-y: auto;
+    border: 1px solid #efefef;
+}
+
+.output-1 {
+    height: 120px;
+}
+
+.output-2,
+.output-3 {
+    height: 300px;
+}
+
+.explore {
+    position: fixed;
+    top: 52px;
+    bottom: 0;
+    right: -400px;
+    width: 400px;
+    background: #efefef;
+    z-index: 999;
+    transition: right 500ms ease-in-out;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.64);
+}
+
+.explore .explore_header {
+    height: 40px;
+    padding: 10px;
+    border-bottom: 1px solid #e0dddd;
+    font-weight: bold;
+}
+
+.explore.sidebar-open {
+    right: 0;
+}
+
+.sidebars > .sidebar {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.64);
+    position: fixed;
+    color: white;
+    padding: 30px;
+    font-size: 2em;
+    text-align: center;
+}
+
+.charts {
+    overflow-y: auto;
+    height: 635px;
+}
+
+.chart_view {
+    border: 1px solid #d2d2d2;
+    margin: 12px;
+    border-radius: 8px;
+}
+
+.chart_header_control {
+    background-color: #e4e3e3;
+}
+
+.chart_header {
+    /*background-color: #dcdada;*/
+    text-align: left;
+    padding-left: 7px;
+    display: inline-block;
+    width: 60%;
+}
+
+.chart_data_source {
+    position: relative;
+    display: inline-block;
+    /*background-color: #dcdada;*/
+    text-align: right;
+    vertical-align: top;
+    width: 36%;
+    cursor: pointer;
+}

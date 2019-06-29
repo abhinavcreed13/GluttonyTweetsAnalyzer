@@ -1,0 +1,15 @@
+{
+  "_id": "_design/storyview",
+  "views": {
+    "get_alcohol_data": {
+      "map": "function (doc){alcohol=!1;keywords=\"alcohol party pub drink drunk drank pissed\".split(\" \");for(i=0;i<keywords.length;i++)if(doc.full_text&&-1!=doc.full_text.indexOf(keywords[i])){alcohol=!0;break}};"
+    },
+    "get_melbourne": {
+      "map": "function (a){null!=a.place&&\"Melbourne, Victoria\"==a.place.full_name&&a.full_text&&emit(a._id,1)};"
+    },
+    "get_cities_count": {
+      "map": "function (a){-1!=[\"Melbourne, Victoria\",\"Geelong, Victoria\",\"Ballarat, Victoria\",\"Bendigo, Victoria\"].indexOf(a.place.full_name)?emit(a.place.full_name,1):emit(\"others\",1)};",
+      "reduce": "_count"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+- name: stop couchdb service
+  become: yes
+  args:
+    warn: false
+  command: 'service couchdb stop'
+
+- name: De-register couchdb service
+  become: yes
+  args:
+    warn: false
+  command: 'rm /etc/systemd/system/couchdb.service'
+
+- name: remove user account
+  become: yes
+  user:
+    name: couchdb
+    shell: /bin/bash
+    remove: yes
+
+- name: remove couchdb
+  become: yes
+  args:
+    warn: false
+  command: 'rm -r /data/couchdb'

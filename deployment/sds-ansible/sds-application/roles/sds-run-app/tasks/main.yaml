@@ -1,0 +1,18 @@
+- name: Connect couchdb with application
+  replace:
+    dest: /data/projectsds-1.0.0/config/connectors.ini
+    regexp: '^url = http://45.113.235.238:5990$'
+    replace: 'url = http://{{ansible_eth0.ipv4.address}}:5990'
+
+- name: Build main app docker image
+  become: yes
+  args:
+    warn: false
+  command: 'docker build -t sdsmainapp /data/projectsds-1.0.0'
+
+- name: Start docker main app image
+  become: yes
+  args:
+    warn: false
+  command: 'docker run --restart=on-failure:15 -d -p 1313:1313 sdsmainapp'
+

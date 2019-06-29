@@ -1,0 +1,50 @@
+\begin{flattened}
+%----------------------------------------
+%	Challenge 1
+%----------------------------------------
+\Challenge Docker container shutdown in case the code running inside fails.
+
+\TheSolution A simple docker container runs until there is some  application running inside or it has been explicitly specified that a container is application independent. 
+Hence we modified the docker code that restarts the docker container as soon as it fails. This made sure that we were able to continually run our harvesters and the UI app. 
+\begin{tcolorbox}
+\begin{lstlisting}[language=bash, caption=Restart the docker container on failure]
+docker run --restart=on-failure:15 -d -p 4000:80 sdsharvester
+\end{lstlisting}
+\end{tcolorbox}
+
+%----------------------------------------
+%	Challenge 2
+%----------------------------------------
+\Challenge Application running inside the docker is not accessible
+
+\TheSolution This was little tricky. We have written the code to expose specific port in python code for UI app. We made sure that our docker container also maps and exposes the same port to the world so that the app is accessible outside the container.
+\begin{tcolorbox}
+\begin{lstlisting}[language=python, caption=Expose Port in Application]
+
+[globals]
+host=0.0.0.0
+port=1313
+allowed_iterations = 100 
+.
+.
+.
+print('.....Server running on ' + globals['port'] + '.....')
+app.run(host=globals['host'], port=globals['port'])
+   
+\end{lstlisting}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\begin{lstlisting}[language=bash, caption=Expose Port in Docker Container]
+docker run --restart=on-failure:15 -d -p 1313:1313 sdsmainapp
+\end{lstlisting}
+\end{tcolorbox}
+
+%----------------------------------------
+%	Challenge 3
+%----------------------------------------
+\Challenge Docker images uploaded on docker hub required authentication to be downloaded and executed in VMs.
+
+\TheSolution We had created docker images and uploaded them on docker hub. Our testing went fine in VMs. But in our scenario we were required to expose our authentication details. Hence we decided to create docker files locally and create bash commands that can execute the docker container locally. This test also went smoothly and we later integrated this code in Ansible. This made sure that we have the same docker file in all the VMs(via Ansible) and we could run multiple harvester containers with same docker file.  
+
+\end{flattened}

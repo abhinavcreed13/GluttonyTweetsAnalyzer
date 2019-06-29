@@ -1,0 +1,51 @@
+\section{User Guide}
+This guide provides information on how developer can deploy our system and how users can interact with the system to view and play around with the story.
+
+\subsection{Installation Guide}
+We have created installation module of this system with the goal of deploying entire application with its infrastructure using single executable script. This project already has the \texttt{.tar.gz} package created using \texttt{create-package.sh} due to which entire system on the cloud can be deployed using following steps:
+
+\begin{enumerate}
+    \item Install \texttt{Ansible} in the system using which cloud deployment will be performed.
+    
+    \item Download \texttt{openrc.sh} file from dashboard of NeCTAR Research Cloud. It is also recommended to generate API password by resetting it and saving it somewhere as it will be prompted to enter by the script frequently.
+    
+    \item Create key-pair on the NeCTAR cloud by uploading public key generated using local machine.
+    
+    \item Rename your private key to \texttt{cloud.key} and copy it with \texttt{openrc.sh} inside \texttt{serverfiles}\footnote{ProjectSDS/deployment/sds-ansible/static}
+    
+    \item Open terminal at \texttt{sds-ansible}\footnote{ProjectSDS/deployment/sds-ansible} location and trigger following command to start deployment: \textbf{\texttt{sh exec-sds-ansible.sh}}
+    
+    \item The installation will ask for SUDO password and will prompt frequently to enter openstack API password. After entire flow as shown in Figure \ref{fig:cloudansibledeplyment} is completed, application and harvester should be up and running.
+
+\end{enumerate}
+
+\subsection{User-Interface Guide}
+This guide explains the UI capability and features provided by the system by user can perform several operations and visualize our scenarios.
+
+\begin{itemize}
+    \item \texttt{Defining Regions.} User has the ability to filter desired region based on the area on which visualization is required. Depending upon the region selected, map automatically select the desired region.
+    
+    \item \texttt{Selecting tweets filter.} UI provides the capability of selected filter on the tweets based on the kind of correlation user want to see for sins with AURIN dataset.
+    
+    \item \texttt{Selecting AURIN dataset.} User can selected desired AURIN dataset for visualizing correlation on the map with respect to the filter provided on the tweets.
+    
+    \item \texttt{Maps manipulations.} Maps can be easily manipulated by using basic mouse operations. It also provides the capability of visualizing AURIN dataset in heatmaps with data interaction capabilities as explained in Section \ref{visualization}.
+    
+    \item \texttt{Exploring correlation.} UI also provides the capability of exploring correlation with more in-depth analysis using visualizations. Using explore feature, user can see how tweets of respective filter are relating with the selected AURIN dataset in much more detailed mannner as explained in Section \ref{explore}.
+    
+\end{itemize}
+
+\subsection{Useful Links}
+
+\begin{itemize}
+    \item \textbf{Application UI}. It is deployed on all 4 instances for minimizing downtime risk.
+    \begin{itemize}
+    \item \url{http://45.113.235.238:1313}
+    \item \url{http://45.113.235.186:1313}
+    \item \url{http://45.113.233.238:1313}
+    \item \url{http://45.113.233.242:1313}
+    \end{itemize}
+    \item \textbf{Github Repository}. \url{https://github.com/abhinavcreed13/ProjectSDS}
+    \item \textbf{Youtube Video Link.} \url{https://youtu.be/uUYbnlUWf6A}
+    \item \textbf{Overleaf LaTeX Link.} \url{https://www.overleaf.com/read/wgdhystbbygt}
+\end{itemize}

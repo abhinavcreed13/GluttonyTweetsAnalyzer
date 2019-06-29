@@ -1,0 +1,17 @@
+- hosts: Webservers
+  sudo: yes
+  vars_files:
+    - host_vars/sds-deps-vars.yaml
+  gather_facts: true
+
+  roles:
+    - role: sds-deps-common
+    - role: sds-deps-mount-volumes
+    - role: sds-deps-install-docker
+    - role: sds-deps-install-couchdb
+    
+    
+    
+    
+    
+    #- role: sds-deps-uninstall-couchdb

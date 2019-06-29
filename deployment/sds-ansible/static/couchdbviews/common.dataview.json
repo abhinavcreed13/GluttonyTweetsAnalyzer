@@ -1,0 +1,8 @@
+{
+  "_id" : "_design/dataview",
+  "views" : {
+    "get_data" : {
+      "map" : "function (doc) { emit(doc._id, 1); }"
+    }
+  }
+}

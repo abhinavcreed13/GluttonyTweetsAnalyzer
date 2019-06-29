@@ -1,0 +1,119 @@
+\documentclass[a4paper, 12pt]{article}
+
+% Importing necessary pacakages
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{comment}
+\usepackage{fullpage} % changes the margin
+\usepackage{graphicx}
+\usepackage{import}
+\usepackage[english]{babel}
+\usepackage[backend=biber,sorting=none]{biblatex}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{csquotes}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{caption,subcaption}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\usepackage{mdframed}
+
+
+% \floatstyle{boxed} 
+% \restylefloat{figure}
+% \usepackage[
+% backend=biber,
+% style=alphabetic,
+% sorting=ynt
+% ]{biblatex}
+
+% setting paragraph style
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+                        {-3.25ex\@plus -1ex \@minus -.2ex}%
+                        {0.0001pt \@plus .2ex}%
+                        {\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\z@}%
+                        {-3.25ex\@plus -1ex \@minus -.2ex}%
+                        {0.0001pt \@plus .2ex}%
+                        {\normalfont\normalsize\bfseries}}
+                        
+\lstdefinelanguage{Dockerfile}
+{
+  morekeywords={FROM, RUN, CMD, LABEL, MAINTAINER, EXPOSE, ENV, ADD, COPY, ENTRYPOINT, VOLUME, USER, WORKDIR, ARG, ONBUILD, STOPSIGNAL, HEALTHCHECK, SHELL}, morecomment=[l]{\#}, morestring=[b]"
+}
+\renewcommand{\lstlistingname}{Code Snippet}% Listing -> Code
+\lstset{
+    backgroundcolor = \color{lightgray},
+    columns=flexible,
+    keepspaces=true,
+    showstringspaces=false,
+    basicstyle=\footnotesize\ttfamily,
+    commentstyle=\color{teal},
+    keywordstyle=\color{purple},
+    stringstyle=\color{blue}
+}
+
+
+%\renewcommand\thesection{\arabic{section}}
+%\renewcommand\thesubsubsection{\thesubsection.\alph{subsubsection}}  
+% \renewcommand\thesubsubsection{\alph{subsubsection}}
+
+\setlength{\parskip}{0.3em}
+
+\makeatother
+% setting depth counter
+\setcounter{secnumdepth}{6}
+% \setcounter{tocdepth}{6}
+
+% Importing the necessary object
+\graphicspath{{resources/images/}}
+\addbibresource{bibliographies/abhinav.bib}
+\addbibresource{bibliographies/rohit.bib}
+\addbibresource{bibliographies/ben.bib} 
+\addbibresource{bibliographies/jan.bib} 
+\addbibresource{bibliographies/kabir.bib}
+
+
+
+% Start of main document
+\begin{document}
+% Contains the title page, abstract and table of content
+\import{layout/}{initialpages.tex}
+
+\newpage
+
+\import{layout/}{introduction.tex}
+
+% \import{layout/}{roles.tex}
+
+\import{layout/}{projectsolutionapproach.tex}
+
+\import{layout/}{solutiondesign.tex}
+
+\import{layout/}{deployment.tex}
+
+\import{layout/}{harvester.tex}
+
+\import{layout/}{datastorage.tex}
+
+\import{layout/}{dataanalysis.tex}
+
+\import{layout/}{visualization.tex}
+
+\import{layout/}{userguide.tex}
+
+% \import{layout/}{challenges.tex}
+
+% \import{layout/}{codes.tex}
+
+% \import{layout/}{finalpages.tex}
+
+
+\end{document}

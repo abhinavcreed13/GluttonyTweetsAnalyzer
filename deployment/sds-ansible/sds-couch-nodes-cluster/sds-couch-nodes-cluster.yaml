@@ -1,0 +1,8 @@
+- hosts: Webserver
+  sudo: yes
+  vars_files:
+    - host_vars/sds-couch-dynamic-vars.yaml
+  gather_facts: true
+
+  roles:
+    - role: sds-deploy-couch-cluster

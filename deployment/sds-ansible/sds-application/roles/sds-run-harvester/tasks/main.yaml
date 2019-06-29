@@ -1,0 +1,18 @@
+- name: Connect couchdb with harvester
+  replace:
+    dest: /data/projectsds-1.0.0/harvester/config.ini
+    regexp: '^url = http://45.113.235.238:5990$'
+    replace: 'url = http://{{ansible_eth0.ipv4.address}}:5990'
+
+- name: Build harvester docker image
+  become: yes
+  args:
+    warn: false
+  command: 'docker build -t sdsharvester /data/projectsds-1.0.0/harvester'
+
+- name: Start docker harvester image
+  become: yes
+  args:
+    warn: false
+  command: 'docker run --restart=on-failure:15 -d -p 4000:4000 sdsharvester'
+

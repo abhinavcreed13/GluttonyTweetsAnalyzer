@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProjectSDS</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+    <link rel="stylesheet"
+          href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6/css/select2.min.css"
+          rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6/js/select2.min.js"></script>
+    <link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+          crossorigin="anonymous">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css'
+          rel='stylesheet'/>
+    <script src='https://code.highcharts.com/highcharts.js'></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <!-- thirdparty -->
+    <script src='/thirdparty/jquery.sidebar.min.js'></script>
+    <!-- thirdparty -->
+    <script src="/js/main.js"></script>
+    <script src="/js/lib/SdsMap.js"></script>
+    <script src="/js/lib/ApiManager.js"></script>
+    <script src="/js/lib/ComponentsManager.js"></script>
+    <script src="/js/lib/CoordinatesManager.js"></script>
+    <link href="/css/script.css" rel="stylesheet"/>
+</head>
+<body>
+<div>
+    <div class="header">
+        <nav class="navbar navbar-inverse" role="navigation"
+             style="padding-left:130px;">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">COMP90024 -
+                    Seven Deadly Sins - Assignment 2<span
+                            class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="control" id="data_control">
+        <div class="define_region">
+            <div>Define Region:</div>
+            <div id="region_section">
+                <select class="data-control-define-region"
+                        name="state">
+                </select>
+            </div>
+        </div>
+        <div class="plot_sins">
+            <div>Plot Sins:</div>
+            <div id="sins_section">
+                <select class="data-control-plot-sins"
+                        name="state2">
+                </select>
+            </div>
+        </div>
+        <div class="aurin_dataset">
+            <div>Aurin dataset to correlate:</div>
+            <div id="aurin_section">
+                <select class="data-control-aurin-dataset"
+                        name="state3">
+                </select>
+            </div>
+        </div>
+        <div class="ops">
+            <!--<div class="tweet_count"></div>-->
+            <button type="button" id="explore_action"
+                    class="btn btn-primary">Explore
+            </button>
+            <button type="button" id="reset_action"
+                    class="btn btn-primary">Reset
+            </button>
+            <button type="button"
+                    id="get_more_tweets_action"
+                    class="btn btn-primary">Get More Tweets
+            </button>
+        </div>
+
+    </div>
+    <div class="mapview" id="map_view">
+    </div>
+    <div class="explore" id="explore_sidebar">
+        <div class="explore_header">
+            <span>Explore</span>
+            <span class="tweet_count"></span>
+            <div class="close"><i class="fa fa-times"
+                                  aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="charts">
+            <div class="chart_view">
+                <div class="chart_header_control">
+                    <div class="chart_header">Top 5 Region
+                        vs
+                        Tweets
+                    </div>
+                    <div class="chart_data_source"><a href="https://portal.aurin.org.au">Aurin</a>
+                    </div>
+                </div>
+                <div class="chart_container">
+                    <div id="chart_container_01"
+                         style="height: 300px"></div>
+                </div>
+            </div>
+
+            <div class="chart_view" id="chart_02">
+                <div class="chart_header_control">
+                    <div class="chart_header">Top 5 Diabetes
+                        Region
+                    </div>
+                    <div class="chart_data_source"><a href="https://portal.aurin.org.au">Aurin</a>
+                    </div>
+                </div>
+                <div class="chart_container">
+                    <div id="chart_container_02"
+                         style="height: 270px"></div>
+                </div>
+            </div>
+
+            <div class="chart_view" id="chart_03">
+                <div class="chart_header_control">
+                    <div class="chart_header">Preferred Restaurants vs
+                        Tweets
+                    </div>
+                    <div class="chart_data_source"><a
+                            href="https://data.melbourne.vic.gov.au/Economy/Cafes-and-restaurants-with-seating-capacity/xt2y-tnn9"
+                            target="_blank">DataMelbourneVIC</a>
+                    </div>
+                </div>
+                <div class="chart_container">
+                    <div id="chart_container_03"
+                         style="height: 300px"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="test-output-section">
+        <pre class="output-1">
+            event not triggered
+        </pre>
+        <pre class="output-2">
+            event not triggered
+        </pre>
+        <pre class="output-3">
+            event not triggered
+        </pre>
+    </div>
+    <script>
+        $(document).ready(function () {
+            var _sds = new SDS();
+            _sds.init();
+        })
+    </script>
+</div>
+</body>
+</html>
